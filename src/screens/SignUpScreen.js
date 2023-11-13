@@ -1,58 +1,41 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 
-const SignInScreen = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    cpassword: "",
-  });
-
-  const handleChange = (name, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = () => {
-    Navigate();
-  };
+const SignUpScreen = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cpassword, setCpassword] = useState("");
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>sign up</Text>
-      <InputField
-        placeholder="email"
-        value={formData.email}
-        setValue={(value) => handleChange("email", value)}
-      />
+      <InputField placeholder="email" value={email} setValue={setEmail} />
       <InputField
         placeholder="username"
-        value={formData.username}
-        setValue={(value) => handleChange("username", value)}
+        value={username}
+        setValue={setUsername}
       />
       <InputField
         placeholder="password"
-        value={formData.password}
-        setValue={(value) => handleChange("password", value)}
+        value={password}
+        setValue={setPassword}
         secureTextEntry
       />
       <InputField
         placeholder="confirm password"
-        value={formData.cpassword}
-        setValue={(value) => handleChange("cpassword", value)}
+        value={cpassword}
+        setValue={setCpassword}
         secureTextEntry
       />
       <SubmitButton />
-      <Pressable>
+      <TouchableOpacity>
         <Text style={styles.tologin}>
           already have an account? click here to log in!
         </Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -63,6 +46,7 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: "60%",
     alignItems: "center",
+    marginHorizontal: "15%",
   },
   title: {
     fontSize: 30,
@@ -78,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignInScreen;
+export default SignUpScreen;
