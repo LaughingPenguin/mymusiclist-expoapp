@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React, { useState } from "react";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
@@ -48,6 +48,11 @@ const SignInScreen = () => {
         secureTextEntry
       />
       <SubmitButton />
+      <Pressable>
+        <Text style={styles.tologin}>
+          already have an account? click here to log in!
+        </Text>
+      </Pressable>
     </View>
   );
 };
@@ -65,6 +70,11 @@ const styles = StyleSheet.create({
 
     marginBottom: 10,
     color: "#3E517A",
+  },
+  tologin: {
+    margin: 10,
+    fontSize: 13,
+    color: "#506186",
   },
 });
 
