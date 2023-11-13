@@ -3,37 +3,24 @@ import React, { useState } from "react";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 
-const SignUpScreen = ({ navigation }) => {
-  const [username, setUsername] = useState("");
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [cpassword, setCpassword] = useState("");
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>sign up</Text>
+      <Text style={styles.title}>log in</Text>
       <InputField placeholder="email" value={email} setValue={setEmail} />
-      <InputField
-        placeholder="username"
-        value={username}
-        setValue={setUsername}
-      />
       <InputField
         placeholder="password"
         value={password}
         setValue={setPassword}
         secureTextEntry
       />
-      <InputField
-        placeholder="confirm password"
-        value={cpassword}
-        setValue={setCpassword}
-        secureTextEntry
-      />
       <SubmitButton />
-      <TouchableOpacity onPress={() => navigation.navigate("login")}>
+      <TouchableOpacity onPress={() => navigation.navigate("sign up")}>
         <Text style={styles.tologin}>
-          already have an account? click here to log in!
+          don't have an account? click here to create one!
         </Text>
       </TouchableOpacity>
     </View>
@@ -44,7 +31,7 @@ const styles = StyleSheet.create({
   container: {
     width: "70%",
     margin: 10,
-    marginTop: "60%",
+    marginTop: "70%",
     alignItems: "center",
     marginHorizontal: "15%",
   },
@@ -62,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default LoginScreen;
