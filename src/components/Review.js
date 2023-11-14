@@ -4,7 +4,7 @@ import React from "react";
 const Review = ({ song, artist, rating, onPress }) => {
   return (
     <View style={styles.reviewWrapper}>
-      <TouchableOpacity style={styles.review}>
+      <TouchableOpacity style={styles.review} onPress={onPress}>
         <Text style={styles.song}>{song}</Text>
         <Text style={styles.artist}>by {artist}</Text>
       </TouchableOpacity>

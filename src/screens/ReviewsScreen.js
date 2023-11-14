@@ -4,39 +4,69 @@ import Review from "../components/Review";
 import SubmitButton from "../components/SubmitButton";
 import Modal from "react-native-modal";
 import InputField from "../components/InputField";
+import Rating from "../components/Rating";
 
 const ReviewsScreen = ({ navigation }) => {
-  const [review, setReview] = useState({
-    username: "",
-    song: "",
-    artist: "",
-    rating: NaN,
-  });
+  const username = "Bob";
+  const [id, setId] = useState(NaN);
   const [song, setSong] = useState("");
   const [artist, setArtist] = useState("");
+  const [rating, setRating] = useState(6);
   const [reviewItems, setReviewItems] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState("");
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const handleAddReview = ({ name, value }) => {
-    setReview((prevReview) => ({ ...prevReview, [name]: value }));
+  const handleStarPress = (newRating) => {
+    setRating(newRating);
   };
 
-  useEffect(() => {
-    if (review.song && review.artist) {
-      setReviewItems((prevItems) => [...prevItems, { ...review }]);
+  const handleAddReview = () => {
+    const review = {
+      id: id,
+      username: username,
+      song: song,
+      artist: artist,
+      rating: rating,
+    };
+    setReviewItems((prevItems) => [...prevItems, review]);
+    setSong("");
+    setArtist("");
+    setRating(6);
+  };
+
+  const validateReview = () => {
+    if (song == "" || artist == "" || rating == NaN) {
+      setError("please fill in all fields.");
+    } else {
+      handleAddReview();
+      toggleModal();
+      setError("");
     }
-  }, [review]);
+  };
+
+  const handleReviewPress = () => {
+    navigation.navigate("review");
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.sectionTitle}>ratings</Text>
       <View style={styles.items}>
         {reviewItems.map((review) => {
-          return <Review song={review.song} artist={review.artist} />;
+          return (
+            <Review
+              id={review.id}
+              username={review.username}
+              song={review.song}
+              artist={review.artist}
+              rating={review.rating}
+              onPress={handleReviewPress}
+            />
+          );
         })}
       </View>
       <View style={styles.buttons}>
@@ -45,18 +75,23 @@ const ReviewsScreen = ({ navigation }) => {
           <View style={styles.createModal}>
             <Text style={styles.sectionTitle}>create a review</Text>
             <View style={styles.createForm}>
-              <Text>song</Text>
+              <Text style={styles.inputTitle}>song</Text>
               <InputField placeholder="song" value={song} setValue={setSong} />
-              <Text>artist</Text>
+              <Text style={styles.inputTitle}>artist</Text>
               <InputField
                 placeholder="artist"
                 value={artist}
                 setValue={setArtist}
               />
-              <Text>rating</Text>
+              <Rating
+                totalStars={5}
+                rating={rating}
+                onStarPress={handleStarPress}
+              />
+
               <SubmitButton
                 text={"create review"}
-                onPress={handleAddReview}
+                onPress={validateReview}
                 style={styles.closeModal}
               />
               <SubmitButton
@@ -64,6 +99,7 @@ const ReviewsScreen = ({ navigation }) => {
                 onPress={toggleModal}
                 style={styles.closeModal}
               />
+              {error && <Text style={styles.errorMessage}>{error}</Text>}
             </View>
           </View>
         </Modal>
@@ -111,6 +147,10 @@ const styles = StyleSheet.create({
   createForm: {
     width: "70%",
     marginTop: 5,
+  },
+  inputTitle: {
+    paddingLeft: 5,
+    color: "#3E517A",
   },
 });
 
