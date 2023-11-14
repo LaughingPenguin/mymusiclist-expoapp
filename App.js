@@ -4,6 +4,7 @@ import SignUpScreen from "./src/screens/SignUpScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "./src/screens/LogInScreen";
 import ReviewsScreen from "./src/screens/ReviewsScreen";
+import CreateReviewScreen from "./src/screens/CreateReviewScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -25,6 +26,7 @@ export default function App() {
           component={ReviewsScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="create review" component={CreateReviewScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

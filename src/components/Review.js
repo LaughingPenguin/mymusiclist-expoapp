@@ -1,14 +1,38 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 
-const Review = () => {
+const Review = ({ song, artist, rating, onPress }) => {
   return (
-    <View>
-      <Text>Review</Text>
+    <View style={styles.reviewWrapper}>
+      <TouchableOpacity style={styles.review}>
+        <Text style={styles.song}>{song}</Text>
+        <Text style={styles.artist}>by {artist}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  reviewWrapper: {
+    width: "100%",
+    backgroundColor: "white",
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+    opacity: 0.6,
+  },
+  review: { flexDirection: "row", alignItems: "center" },
+  song: {
+    fontSize: 15,
+    color: "#3E517A",
+    fontWeight: "500",
+  },
+  artist: {
+    fontSize: 10,
+    color: "#506186",
+    marginLeft: 3,
+    marginTop: 5,
+  },
+});
 
 export default Review;
