@@ -2,13 +2,27 @@ import { View, Text, SafeAreaView, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
 import Review from "../components/Review";
 import SubmitButton from "../components/SubmitButton";
+import Modal from "react-native-modal";
+import InputField from "../components/InputField";
 
 const ReviewsScreen = ({ navigation }) => {
-  const [review, setReview] = useState({ song: "", artist: "" });
+  const [review, setReview] = useState({
+    username: "",
+    song: "",
+    artist: "",
+    rating: NaN,
+  });
+  const [song, setSong] = useState("");
+  const [artist, setArtist] = useState("");
   const [reviewItems, setReviewItems] = useState([]);
+  const [isModalVisible, setModalVisible] = useState(false);
 
-  const handleAddReview = (r) => {
-    setReview((prevReview) => ({ ...prevReview, ...r }));
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const handleAddReview = ({ name, value }) => {
+    setReview((prevReview) => ({ ...prevReview, [name]: value }));
   };
 
   useEffect(() => {
@@ -26,12 +40,33 @@ const ReviewsScreen = ({ navigation }) => {
         })}
       </View>
       <View style={styles.buttons}>
-        <SubmitButton
-          text={"create review"}
-          onPress={() => {
-            navigation.navigate("create review");
-          }}
-        />
+        <SubmitButton text={"create review"} onPress={toggleModal} />
+        <Modal isVisible={isModalVisible} style={styles.modal}>
+          <View style={styles.createModal}>
+            <Text style={styles.sectionTitle}>create a review</Text>
+            <View style={styles.createForm}>
+              <Text>song</Text>
+              <InputField placeholder="song" value={song} setValue={setSong} />
+              <Text>artist</Text>
+              <InputField
+                placeholder="artist"
+                value={artist}
+                setValue={setArtist}
+              />
+              <Text>rating</Text>
+              <SubmitButton
+                text={"create review"}
+                onPress={handleAddReview}
+                style={styles.closeModal}
+              />
+              <SubmitButton
+                text={"close"}
+                onPress={toggleModal}
+                style={styles.closeModal}
+              />
+            </View>
+          </View>
+        </Modal>
         <SubmitButton
           text={"exit"}
           onPress={() => {
@@ -63,6 +98,19 @@ const styles = StyleSheet.create({
   },
   buttons: {
     width: "40%",
+  },
+  createModal: {
+    backgroundColor: "white",
+    width: "100%",
+    height: "70%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    backgroundColor: "#d7dedc",
+  },
+  createForm: {
+    width: "70%",
+    marginTop: 5,
   },
 });
 
