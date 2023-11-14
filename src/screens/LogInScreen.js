@@ -7,6 +7,10 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const onLoginPress = () => {
+    navigation.navigate("reviews");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>log in</Text>
@@ -17,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
         setValue={setPassword}
         secureTextEntry
       />
-      <SubmitButton />
+      <SubmitButton text="login" onPress={onLoginPress} />
       <TouchableOpacity onPress={() => navigation.navigate("sign up")}>
         <Text style={styles.tologin}>
           don't have an account? click here to create one!
@@ -29,11 +33,12 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "70%",
-    margin: 10,
-    marginTop: "70%",
+    padding: 10,
+    paddingTop: "70%",
+    paddingBottom: "100%",
     alignItems: "center",
-    marginHorizontal: "15%",
+    paddingHorizontal: "15%",
+    backgroundColor: "#d7dedc",
   },
   title: {
     fontSize: 30,

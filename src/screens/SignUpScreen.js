@@ -9,6 +9,8 @@ const SignUpScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
 
+  const onSignUpPress = () => {};
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>sign up</Text>
@@ -30,7 +32,7 @@ const SignUpScreen = ({ navigation }) => {
         setValue={setCpassword}
         secureTextEntry
       />
-      <SubmitButton />
+      <SubmitButton text="sign up" onPress={onSignUpPress} />
       <TouchableOpacity onPress={() => navigation.navigate("login")}>
         <Text style={styles.tologin}>
           already have an account? click here to log in!
@@ -42,11 +44,12 @@ const SignUpScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "70%",
-    margin: 10,
-    marginTop: "60%",
+    padding: 10,
+    paddingTop: "60%",
+    paddingBottom: "100%",
     alignItems: "center",
-    marginHorizontal: "15%",
+    paddingHorizontal: "15%",
+    backgroundColor: "#d7dedc",
   },
   title: {
     fontSize: 30,
