@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React, { useState } from "react";
+import { useToast } from "react-native-toast-notifications";
 import axios from "axios";
 
 import InputField from "../components/InputField";
@@ -10,20 +11,21 @@ const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
+  const toast = useToast();
 
   const handleSubmit = () => {
     if (password !== cpassword) {
-      console.log("password and confirm password must match");
+      toast.show('password and confirm password must match', { type: 'danger', duration: 2000, position: 'top' });
     } else if (password.length < 10 || password.length > 25) {
-      console.log("password not between 10 and 20 characters");
+      toast.show('password not between 10 and 20 characters', { type: 'danger', duration: 2000, position: 'top' });
     } else if (username.length < 3 || username.length > 20) {
-      console.log("username not between 3 and 20 characters");
+      toast.show('username not between 3 and 20 characters', { type: 'danger', duration: 2000, position: 'top' });
     } else if (!username || !password || !cpassword || !email) {
-      console.log("not all fields are filled");
+      toast.show('not all fields are filled', { type: 'danger', duration: 2000, position: 'top' });
     } else {
       axios
         .post(
-          "http://YOUR_IP_ADDRESS:8080/index.php/user/signup",
+          "http://192.168.4.26:8080/index.php/user/signup",
           JSON.stringify({
             username: username,
             email: email,
@@ -33,16 +35,16 @@ const SignUpScreen = ({ navigation }) => {
         )
         .then((response) => {
           if (response.status === 201) {
-            console.log("account created", response);
-            navigation.navigate("login");
+            toast.show('account created', { type: 'success', duration: 1500, position: 'top' });
+            setTimeout(() => navigation.navigate("login"), 1500);
           }
         })
         .catch((error) => {
           if (error.response.status === 409) {
-            console.log("account already exists", error);
-            navigation.navigate("login");
+            toast.show('account already created', { type: 'danger', duration: 1500, position: 'top' });
+            setTimeout(() => navigation.navigate("login"), 1500);
           } else {
-            console.log("could not sign up", error);
+            toast.show('could not sign up', { type: 'danger', duration: 2000, position: 'top' });
           }
         });
     }
@@ -69,7 +71,7 @@ const SignUpScreen = ({ navigation }) => {
         setValue={setCpassword}
         secureTextEntry
       />
-      <SubmitButton text="sign up" onPress={handSubmit} />
+      <SubmitButton text="sign up" onPress={handleSubmit} />
       <TouchableOpacity onPress={() => navigation.navigate("login")}>
         <Text style={styles.tologin}>
           already have an account? click here to log in!

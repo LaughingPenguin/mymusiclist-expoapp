@@ -1,5 +1,6 @@
 import { View, Text, SafeAreaView, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
+import { useToast } from "react-native-toast-notifications";
 import axios from "axios";
 import Review from "../components/Review";
 import SubmitButton from "../components/SubmitButton";
@@ -14,6 +15,7 @@ const ReviewsScreen = ({ navigation, route }) => {
   const [artist, setArtist] = useState("");
   const [rating, setRating] = useState(6);
   const [isModalVisible, setModalVisible] = useState(false);
+  const toast = useToast();
 
   // The set containing the review items
   const [reviewItems, setReviewItems] = useState([]);
@@ -29,7 +31,7 @@ const ReviewsScreen = ({ navigation, route }) => {
   // update the viewed items each time the page is loaded
   useEffect(() => {
     axios
-      .get("http://YOUR_IP_ADDRESS:8080/index.php/review/read")
+      .get("http://192.168.4.26:8080/index.php/review/read")
       .then((response) => {
         setReviewItems(response.data);
       })
@@ -50,25 +52,25 @@ const ReviewsScreen = ({ navigation, route }) => {
     setArtist("");
     setRating(6);
     axios
-      .post("http://YOUR_IP_ADDRESS:8080/index.php/review/create", review)
+      .post("http://192.168.4.26:8080/index.php/review/create", review)
       .then((response) => {
         if (response.status === 200) {
-          console.log("create successful");
+          toast.show('create successful', { type: 'success', duration: 1500, position: 'top' });
           setId(response.data.id);
         }
       })
       .catch((error) => {
         if (error.response.status === 409) {
-          console.log("review already created");
+          toast.show('you have already created a review for this song', { type: 'danger', duration: 2000, position: 'top' });
         } else {
-          console.log("create failed");
+          toast.show('create failed', { type: 'danger', duration: 2000, position: 'top' });
         }
       });
   };
 
   const validateReview = () => {
     if (song == "" || artist == "" || rating == 6) {
-      console.log("please fill in all fields");
+      toast.show('please fill in all fields', { type: 'danger', duration: 2000, position: 'top' });
     } else {
       handleAddReview();
       toggleModal();
