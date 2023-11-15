@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 import axios from 'axios';
@@ -10,7 +10,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     axios
-      .post("http://192.168.4.26:8080/index.php/user/login",
+      .post("http://YOUR_IP_ADDRESS:8080/index.php/user/login",
       JSON.stringify({
         email: email,
         password: password,
@@ -52,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
         secureTextEntry
         required
       />
-      <Button title="login" onPress={handleSubmit} />
+      <SubmitButton text="login" onPress={handSubmit} />
       <TouchableOpacity onPress={() => navigation.navigate("sign up")}>
         <Text style={styles.tologin}>
           don't have an account? click here to create one!

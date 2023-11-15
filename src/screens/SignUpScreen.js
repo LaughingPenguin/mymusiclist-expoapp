@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -20,10 +14,16 @@ const SignUpScreen = ({ navigation }) => {
   const handleSubmit = () => {
     if (password !== cpassword) {
       console.log("password and confirm password must match");
+    } else if (password.length < 10 || password.length > 25) {
+      console.log("password not between 10 and 20 characters");
+    } else if (username.length < 3 || username.length > 20) {
+      console.log("username not between 3 and 20 characters");
+    } else if (!username || !password || !cpassword || !email) {
+      console.log("not all fields are filled");
     } else {
       axios
         .post(
-          "http://192.168.4.26:8080/index.php/user/signup",
+          "http://YOUR_IP_ADDRESS:8080/index.php/user/signup",
           JSON.stringify({
             username: username,
             email: email,
@@ -69,7 +69,7 @@ const SignUpScreen = ({ navigation }) => {
         setValue={setCpassword}
         secureTextEntry
       />
-      <Button title="sign up" onPress={handleSubmit} />
+      <SubmitButton text="sign up" onPress={handSubmit} />
       <TouchableOpacity onPress={() => navigation.navigate("login")}>
         <Text style={styles.tologin}>
           already have an account? click here to log in!
