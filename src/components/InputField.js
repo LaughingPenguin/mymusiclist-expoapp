@@ -1,6 +1,9 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import React from "react";
 
+// This a component representing the input field for the forms used
+// in signup, login, create, etc. All text inputs are passed through
+// the inputfield component.
 const InputField = ({
   value,
   setValue,
