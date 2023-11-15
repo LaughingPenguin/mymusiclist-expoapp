@@ -9,6 +9,7 @@ import InputField from "../components/InputField";
 import Rating from "../components/Rating";
 
 const ReviewsScreen = ({ navigation, route }) => {
+  // State variables to store user data and review details
   const [currUser, setCurrUser] = useState(route.params.username);
   const [id, setId] = useState(0);
   const [song, setSong] = useState("");
@@ -20,15 +21,17 @@ const ReviewsScreen = ({ navigation, route }) => {
   // The set containing the review items
   const [reviewItems, setReviewItems] = useState([]);
 
+  // Function to toggle the visibility of the modal
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
+  // Function to handle star press for rating
   const handleStarPress = (newRating) => {
     setRating(newRating);
   };
 
-  // update the viewed items each time the page is loaded
+  // Fetch and update review items each time the page is loaded
   useEffect(() => {
     axios
       .get("http://YOUR_IP_ADDRESS:8080/index.php/review/read")
@@ -40,6 +43,7 @@ const ReviewsScreen = ({ navigation, route }) => {
       });
   }, [route]);
 
+  // Function to handle adding a new review
   const handleAddReview = () => {
     const review = {
       username: currUser,
@@ -81,6 +85,7 @@ const ReviewsScreen = ({ navigation, route }) => {
       });
   };
 
+  // Function to validate the review before adding it
   const validateReview = () => {
     if (song == "" || artist == "" || rating == 6) {
       toast.show("please fill in all fields", {
@@ -94,15 +99,18 @@ const ReviewsScreen = ({ navigation, route }) => {
     }
   };
 
+  // Function to handle pressing on a review item
   const handleReviewPress = (review) => {
     navigation.navigate("review", { review, currUser });
   };
 
+  // Rendered JSX for the reviews screen
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.user}>You are logged in as: {currUser}</Text>
       <Text style={styles.sectionTitle}>ratings</Text>
       <View style={styles.items}>
+        {/* Displaying review items */}
         {reviewItems.map((review) => {
           return (
             <Review
@@ -118,11 +126,14 @@ const ReviewsScreen = ({ navigation, route }) => {
         })}
       </View>
       <View style={styles.buttons}>
+        {/* Button to open the modal for creating a new review */}
         <SubmitButton text={"create review"} onPress={toggleModal} />
+        {/* Modal for creating a new review */}
         <Modal isVisible={isModalVisible} style={styles.modal}>
           <View style={styles.createModal}>
             <Text style={styles.sectionTitle}>create a review</Text>
             <View style={styles.createForm}>
+              {/* Input fields for creating a new review */}
               <Text style={styles.inputTitle}>song</Text>
               <InputField placeholder="song" value={song} setValue={setSong} />
               <Text style={styles.inputTitle}>artist</Text>
@@ -131,17 +142,20 @@ const ReviewsScreen = ({ navigation, route }) => {
                 value={artist}
                 setValue={setArtist}
               />
+              {/* Rating component for selecting the rating */}
               <Rating
                 totalStars={5}
                 rating={rating}
                 onStarPress={handleStarPress}
               />
 
+              {/* Button to create the review */}
               <SubmitButton
                 text={"create review"}
                 onPress={validateReview}
                 style={styles.closeModal}
               />
+              {/* Button to close the modal */}
               <SubmitButton
                 text={"close"}
                 onPress={toggleModal}
@@ -150,6 +164,7 @@ const ReviewsScreen = ({ navigation, route }) => {
             </View>
           </View>
         </Modal>
+        {/* Button to exit and navigate to the login screen */}
         <SubmitButton
           text={"exit"}
           onPress={() => {
@@ -161,6 +176,7 @@ const ReviewsScreen = ({ navigation, route }) => {
   );
 };
 
+// Styles for the components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -204,4 +220,5 @@ const styles = StyleSheet.create({
   },
 });
 
+// Export the ReviewsScreen component
 export default ReviewsScreen;

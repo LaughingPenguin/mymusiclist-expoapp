@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 
+// These are the review componenets
 const Review = ({ song, artist, rating, onPress }) => {
   return (
     <View style={styles.reviewWrapper}>

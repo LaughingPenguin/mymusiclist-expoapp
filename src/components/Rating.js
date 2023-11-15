@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 
+// The star rating component is used for the rating systems in the viewreviewscreen and
+// the create/edit review modals.
 const StarRating = ({ totalStars, rating, onStarPress }) => {
   const renderStars = () => {
     const stars = [];

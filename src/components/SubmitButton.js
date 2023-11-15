@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 
+// These are buttons for navigation and form submission.
 const SubmitButton = ({ onPress, text }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
