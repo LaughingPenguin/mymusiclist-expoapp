@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet } from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Review from "../components/Review";
@@ -8,7 +8,7 @@ import InputField from "../components/InputField";
 import Rating from "../components/Rating";
 
 const ReviewsScreen = ({ navigation, route }) => {
-  const username = route.params.username;
+  const [currUser, setCurrUser] = useState(route.params.username);
   const [id, setId] = useState(0);
   const [song, setSong] = useState("");
   const [artist, setArtist] = useState("");
@@ -29,7 +29,7 @@ const ReviewsScreen = ({ navigation, route }) => {
   // update the viewed items each time the page is loaded
   useEffect(() => {
     axios
-      .get("http://YOUR_IP_ADDRESS:8080/index.php/review/read")
+      .get("http://172.21.55.39:8080/index.php/review/read")
       .then((response) => {
         setReviewItems(response.data);
       })
@@ -40,21 +40,22 @@ const ReviewsScreen = ({ navigation, route }) => {
 
   const handleAddReview = () => {
     const review = {
-      username: username,
+      username: currUser,
       song: song,
       artist: artist,
       rating: rating,
     };
-    setReviewItems((prevItems) => [...prevItems, review]);
     setSong("");
     setArtist("");
     setRating(6);
     axios
-      .post("http://YOUR_IP_ADDRESS:8080/index.php/review/create", review)
+      .post("http://172.21.55.39:8080/index.php/review/create", review)
       .then((response) => {
         if (response.status === 200) {
           console.log("create successful");
+          setReviewItems((prevItems) => [...prevItems, review]);
           setId(response.data.id);
+          navigation.navigate("reviews", { currUser });
         }
       })
       .catch((error) => {
@@ -76,12 +77,12 @@ const ReviewsScreen = ({ navigation, route }) => {
   };
 
   const handleReviewPress = (review) => {
-    const currUser = username;
     navigation.navigate("review", { review, currUser });
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.user}>You are logged in as: {currUser}</Text>
       <Text style={styles.sectionTitle}>ratings</Text>
       <View style={styles.items}>
         {reviewItems.map((review) => {
@@ -138,7 +139,7 @@ const ReviewsScreen = ({ navigation, route }) => {
           }}
         />
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -178,6 +179,9 @@ const styles = StyleSheet.create({
   },
   inputTitle: {
     paddingLeft: 5,
+    color: "#3E517A",
+  },
+  user: {
     color: "#3E517A",
   },
 });

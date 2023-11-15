@@ -23,7 +23,7 @@ const SignUpScreen = ({ navigation }) => {
     } else {
       axios
         .post(
-          "http://YOUR_IP_ADDRESS:8080/index.php/user/signup",
+          "http://172.21.55.39:8080/index.php/user/signup",
           JSON.stringify({
             username: username,
             email: email,
@@ -34,6 +34,10 @@ const SignUpScreen = ({ navigation }) => {
         .then((response) => {
           if (response.status === 201) {
             console.log("account created", response);
+            setUsername("");
+            setEmail("");
+            setPassword("");
+            setCpassword("");
             navigation.navigate("login");
           }
         })
@@ -69,7 +73,7 @@ const SignUpScreen = ({ navigation }) => {
         setValue={setCpassword}
         secureTextEntry
       />
-      <SubmitButton text="sign up" onPress={handSubmit} />
+      <SubmitButton text="sign up" onPress={handleSubmit} />
       <TouchableOpacity onPress={() => navigation.navigate("login")}>
         <Text style={styles.tologin}>
           already have an account? click here to log in!

@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React, { useState } from "react";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
-import axios from 'axios';
+import axios from "axios";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -10,27 +10,33 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     axios
-      .post("http://YOUR_IP_ADDRESS:8080/index.php/user/login",
-      JSON.stringify({
-        email: email,
-        password: password,
-      }))
+      .post(
+        "http://172.21.55.39:8080/index.php/user/login",
+        JSON.stringify({
+          email: email,
+          password: password,
+        })
+      )
       .then((response) => {
         if (response.status === 200) {
-          console.log("login successful", response)
+          console.log("login successful", response);
+          setEmail("");
+          setPassword("");
           if (response.headers.authorization) {
             const authorizationHeader = response.headers.authorization;
-            const token = authorizationHeader.split('Bearer ')[1];
-            navigation.navigate("reviews", { username: token });
+            const token = authorizationHeader.split("Bearer ")[1];
+            navigation.navigate("reviews", {
+              username: token,
+            });
           }
         }
       })
       .catch((error) => {
         if (error.response.status === 401) {
-          console.log('incorrect credentials')
+          console.log("incorrect credentials");
         } else if (error.response.status === 404) {
-          console.log('account does not exist', error);
-          navigation.navigate('sign up');
+          console.log("account does not exist", error);
+          navigation.navigate("sign up");
         }
       });
   };
@@ -52,7 +58,7 @@ const LoginScreen = ({ navigation }) => {
         secureTextEntry
         required
       />
-      <SubmitButton text="login" onPress={handSubmit} />
+      <SubmitButton text="login" onPress={handleSubmit} />
       <TouchableOpacity onPress={() => navigation.navigate("sign up")}>
         <Text style={styles.tologin}>
           don't have an account? click here to create one!
