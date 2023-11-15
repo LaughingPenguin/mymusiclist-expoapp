@@ -1,8 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React, { useState } from "react";
 import InputField from "../components/InputField";
-import SubmitButton from "../components/SubmitButton";
-import axios from 'axios';
+import axios from "axios";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -17,22 +16,22 @@ const LoginScreen = ({ navigation }) => {
       }))
       .then((response) => {
         if (response.status === 200) {
-          console.log("login successful", response)
+          console.log("login successful", response);
           // if (response.headers.authorization) {
           //   // get authorization header from response
           //   // get token from authorization header
           //   // store token in storage for future authenticated requests
           //   // i.e., AsyncStorage.setItem('token', token);
           // }
-          navigation.navigate("reviews")
+          navigation.navigate("reviews");
         }
       })
       .catch((error) => {
         if (error.response.status === 401) {
-          console.log('incorrect credentials')
+          console.log("incorrect credentials");
         } else if (error.response.status === 404) {
-          console.log('account does not exist', error);
-          navigation.navigate('sign up');
+          console.log("account does not exist", error);
+          navigation.navigate("sign up");
         }
       });
 

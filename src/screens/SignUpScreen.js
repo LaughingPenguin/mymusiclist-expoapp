@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -20,6 +14,12 @@ const SignUpScreen = ({ navigation }) => {
   const handleSubmit = () => {
     if (password !== cpassword) {
       console.log("password and confirm password must match");
+    } else if (password.length < 10 || password.length > 25) {
+      console.log("password not between 10 and 20 characters");
+    } else if (username.length < 3 || username.length > 20) {
+      console.log("username not between 3 and 20 characters");
+    } else if (!username || !password || !cpassword || !email) {
+      console.log("not all fields are filled");
     } else {
       axios
         .post(
