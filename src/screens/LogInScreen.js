@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React, { useState } from "react";
+import EncryptedStorage from 'react-native-encrypted-storage';
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 import axios from 'axios';
@@ -18,12 +19,11 @@ const LoginScreen = ({ navigation }) => {
       .then((response) => {
         if (response.status === 200) {
           console.log("login successful", response)
-          // if (response.headers.authorization) {
-          //   // get authorization header from response
-          //   // get token from authorization header
-          //   // store token in storage for future authenticated requests
-          //   // i.e., AsyncStorage.setItem('token', token);
-          // }
+          if (response.headers.authorization) {
+            const authorizationHeader = response.headers.authorization;
+            const [, token] = authorizationHeader.split('Bearer', );
+            EncryptedStorage.setItem("token", token);
+          }
           navigation.navigate("reviews")
         }
       })
