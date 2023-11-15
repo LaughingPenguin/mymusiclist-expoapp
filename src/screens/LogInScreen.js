@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 import axios from 'axios';
@@ -18,22 +18,15 @@ const LoginScreen = ({ navigation }) => {
       .then((response) => {
         if (response.status === 200) {
           console.log("login successful", response)
-          // if (response.headers.authorization) {
-          //   // get authorization header from response
-          //   // get token from authorization header
-          //   // store token in storage for future authenticated requests
-          //   // i.e., AsyncStorage.setItem('token', token);
-          // }
-          navigation.navigate("reviews")
+          if (response.headers.authorization) {
+            const authorizationHeader = response.headers.authorization;
+            const token = authorizationHeader.split('Bearer ')[1];
+            navigation.navigate("reviews", { username: token });
+          }
         }
       })
       .catch((error) => {
-        if (error.response.status === 401) {
-          console.log('incorrect credentials')
-        } else if (error.response.status === 404) {
-          console.log('account does not exist', error);
-          navigation.navigate('sign up');
-        }
+        throw error;
       });
   };
 
