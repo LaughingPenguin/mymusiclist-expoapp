@@ -26,7 +26,11 @@ export default function App() {
           component={ReviewsScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="review" component={ViewReviewScreen} />
+        <Stack.Screen
+          name="review"
+          component={ViewReviewScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

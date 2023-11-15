@@ -1,5 +1,6 @@
 import { View, Text, SafeAreaView, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Review from "../components/Review";
 import SubmitButton from "../components/SubmitButton";
 import Modal from "react-native-modal";
@@ -7,13 +8,12 @@ import InputField from "../components/InputField";
 import Rating from "../components/Rating";
 
 const ReviewsScreen = ({ navigation, route }) => {
-  const username = "Bob";
+  const username = "abc";
   const [id, setId] = useState(0);
   const [song, setSong] = useState("");
   const [artist, setArtist] = useState("");
   const [rating, setRating] = useState(6);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [error, setError] = useState("");
 
   // The set containing the review items
   const [reviewItems, setReviewItems] = useState([]);
@@ -26,11 +26,20 @@ const ReviewsScreen = ({ navigation, route }) => {
     setRating(newRating);
   };
 
-  useEffect(() => {}, [route]);
+  // update the viewed items each time the page is loaded
+  useEffect(() => {
+    axios
+      .get("http://YOUR_IP_ADDRESS:8080/index.php/review/read")
+      .then((response) => {
+        setReviewItems(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [route]);
 
   const handleAddReview = () => {
     const review = {
-      id: id,
       username: username,
       song: song,
       artist: artist,
@@ -40,21 +49,35 @@ const ReviewsScreen = ({ navigation, route }) => {
     setSong("");
     setArtist("");
     setRating(6);
-    setId((prevId) => prevId + 1);
+    axios
+      .post("http://YOUR_IP_ADDRESS:8080/index.php/review/create", review)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("create successful");
+          setId(response.data.id);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 409) {
+          console.log("review already created");
+        } else {
+          console.log("create failed");
+        }
+      });
   };
 
   const validateReview = () => {
     if (song == "" || artist == "" || rating == 6) {
-      setError("please fill in all fields.");
+      console.log("please fill in all fields");
     } else {
       handleAddReview();
       toggleModal();
-      setError("");
     }
   };
 
   const handleReviewPress = (review) => {
-    navigation.navigate("review", { review });
+    const currUser = username;
+    navigation.navigate("review", { review, currUser });
   };
 
   return (
@@ -105,7 +128,6 @@ const ReviewsScreen = ({ navigation, route }) => {
                 onPress={toggleModal}
                 style={styles.closeModal}
               />
-              {error && <Text style={styles.errorMessage}>{error}</Text>}
             </View>
           </View>
         </Modal>

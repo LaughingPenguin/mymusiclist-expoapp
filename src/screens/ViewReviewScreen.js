@@ -4,9 +4,10 @@ import InputField from "../components/InputField";
 import Rating from "../components/Rating";
 import SubmitButton from "../components/SubmitButton";
 import Modal from "react-native-modal";
+import axios from "axios";
 
 const ViewReviewScreen = ({ navigation, route }) => {
-  const { review } = route.params;
+  const { review, currUser } = route.params;
   const { id, username, song, artist, rating } = review;
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -16,9 +17,55 @@ const ViewReviewScreen = ({ navigation, route }) => {
     setR(newRating);
   };
 
+  // Updates state to match the update modal
   const handleSubmit = () => {
     setR(r);
+    const updatedReview = {
+      id: id,
+      username: username,
+      song: song,
+      artist: artist,
+      rating: r,
+    };
     toggleModal();
+    axios
+      .put("http://YOUR_IP_ADDRESS:8080/index.php/review/update", updatedReview)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("update successful");
+        }
+      })
+      .catch((error) => {
+        console.log("error failed", error);
+      });
+  };
+
+  // delete handler
+  const handleDelete = () => {
+    const deleteData = {
+      id: id,
+      username: username,
+      song: song,
+      artist: artist,
+      rating: r,
+    };
+    axios
+      .delete("http://YOUR_IP_ADDRESS:8080/index.php/review/delete", {
+        data: deleteData,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("delete success");
+          navigation.navigate("reviews", { currUser });
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          console.log("the attempted removed review does not exist");
+        } else {
+          console.log("delete failed", error);
+        }
+      });
   };
 
   const toggleModal = () => {
@@ -36,15 +83,17 @@ const ViewReviewScreen = ({ navigation, route }) => {
         <Text style={styles.inputTitle}>artist</Text>
         <InputField placeholder="artist" value={artist} editable={false} />
         <Rating totalStars={5} rating={r} onStarPress={() => {}} />
+
+        {currUser === username && (
+          <View>
+            <SubmitButton text={"edit"} onPress={toggleModal} />
+            <SubmitButton text={"delete"} onPress={handleDelete} />
+          </View>
+        )}
         <SubmitButton
-          text={"edit"}
-          onPress={toggleModal}
-          style={styles.closeModal}
-        />
-        <SubmitButton
-          text={"delete"}
-          onPress={() => navigation.navigate("reviews")}
-          style={styles.closeModal}
+          text={"exit"}
+          onPress={() => navigation.navigate("reviews", { currUser })}
+          style={styles.exit}
         />
       </View>
       <Modal isVisible={isModalVisible} style={styles.modal}>
