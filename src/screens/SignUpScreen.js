@@ -41,7 +41,7 @@ const SignUpScreen = ({ navigation }) => {
     } else {
       axios
         .post(
-          "http://YOUR_IP_ADDRESS/index.php/user/signup",
+          "http://YOUR_IP_ADDRESS:8080/index.php/user/signup",
           JSON.stringify({
             username: username,
             email: email,
@@ -51,6 +51,10 @@ const SignUpScreen = ({ navigation }) => {
         )
         .then((response) => {
           if (response.status === 201) {
+            setUsername("");
+            setEmail("");
+            setPassword("");
+            setCpassword("");
             toast.show("account created", {
               type: "success",
               duration: 1500,

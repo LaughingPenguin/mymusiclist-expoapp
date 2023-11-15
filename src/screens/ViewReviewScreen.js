@@ -31,7 +31,7 @@ const ViewReviewScreen = ({ navigation, route }) => {
     };
     toggleModal();
     axios
-      .put("http://YOUR_IP_ADDRESS/index.php/review/update", updatedReview)
+      .put("http://YOUR_IP_ADDRESS:8080/index.php/review/update", updatedReview)
       .then((response) => {
         if (response.status === 200) {
           toast.show("update successful", {
@@ -60,7 +60,7 @@ const ViewReviewScreen = ({ navigation, route }) => {
       rating: r,
     };
     axios
-      .delete("http://YOUR_IP_ADDRESS/index.php/review/delete", {
+      .delete("http://YOUR_IP_ADDRESS:8080/index.php/review/delete", {
         data: deleteData,
       })
       .then((response) => {

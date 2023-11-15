@@ -13,7 +13,7 @@ const LoginScreen = ({ navigation }) => {
   const handleSubmit = () => {
     axios
       .post(
-        "http://YOUR_IP_ADDRESS/index.php/user/login",
+        "http://YOUR_IP_ADDRESS:8080/index.php/user/login",
         JSON.stringify({
           email: email,
           password: password,
@@ -21,6 +21,8 @@ const LoginScreen = ({ navigation }) => {
       )
       .then((response) => {
         if (response.status === 200) {
+          setEmail("");
+          setPassword("");
           toast.show("login successful", {
             type: "success",
             duration: 1500,
