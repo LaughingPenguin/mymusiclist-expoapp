@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "./src/screens/LogInScreen";
+import ReviewsScreen from "./src/screens/ReviewsScreen";
+import ViewReviewScreen from "./src/screens/ViewReviewScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -19,6 +21,12 @@ export default function App() {
           component={LoginScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="reviews"
+          component={ReviewsScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="review" component={ViewReviewScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -81,11 +81,12 @@ const SignUpScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "70%",
-    margin: 10,
-    marginTop: "60%",
+    padding: 10,
+    paddingTop: "60%",
+    paddingBottom: "100%",
     alignItems: "center",
-    marginHorizontal: "15%",
+    paddingHorizontal: "15%",
+    backgroundColor: "#d7dedc",
   },
   title: {
     fontSize: 30,
