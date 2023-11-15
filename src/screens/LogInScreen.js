@@ -9,13 +9,11 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     axios
-      .post(
-        "http://172.21.55.39:8080/index.php/user/login",
-        JSON.stringify({
-          email: email,
-          password: password,
-        })
-      )
+      .post("http://YOUR_IP_ADDRESS:8080/index.php/user/login",
+      JSON.stringify({
+        email: email,
+        password: password,
+      }))
       .then((response) => {
         if (response.status === 200) {
           console.log("login successful", response);
@@ -36,6 +34,7 @@ const LoginScreen = ({ navigation }) => {
           navigation.navigate("sign up");
         }
       });
+
   };
 
   return (
@@ -55,8 +54,7 @@ const LoginScreen = ({ navigation }) => {
         secureTextEntry
         required
       />
-      <Button title="login" onPress={handleSubmit} />
-
+      <SubmitButton text="login" onPress={handSubmit} />
       <TouchableOpacity onPress={() => navigation.navigate("sign up")}>
         <Text style={styles.tologin}>
           don't have an account? click here to create one!
