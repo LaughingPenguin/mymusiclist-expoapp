@@ -6,15 +6,17 @@ import Modal from "react-native-modal";
 import InputField from "../components/InputField";
 import Rating from "../components/Rating";
 
-const ReviewsScreen = ({ navigation }) => {
+const ReviewsScreen = ({ navigation, route }) => {
   const username = "Bob";
-  const [id, setId] = useState(NaN);
+  const [id, setId] = useState(0);
   const [song, setSong] = useState("");
   const [artist, setArtist] = useState("");
   const [rating, setRating] = useState(6);
-  const [reviewItems, setReviewItems] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [error, setError] = useState("");
+
+  // The set containing the review items
+  const [reviewItems, setReviewItems] = useState([]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -23,6 +25,8 @@ const ReviewsScreen = ({ navigation }) => {
   const handleStarPress = (newRating) => {
     setRating(newRating);
   };
+
+  useEffect(() => {}, [route]);
 
   const handleAddReview = () => {
     const review = {
@@ -36,10 +40,11 @@ const ReviewsScreen = ({ navigation }) => {
     setSong("");
     setArtist("");
     setRating(6);
+    setId((prevId) => prevId + 1);
   };
 
   const validateReview = () => {
-    if (song == "" || artist == "" || rating == NaN) {
+    if (song == "" || artist == "" || rating == 6) {
       setError("please fill in all fields.");
     } else {
       handleAddReview();
@@ -48,8 +53,8 @@ const ReviewsScreen = ({ navigation }) => {
     }
   };
 
-  const handleReviewPress = () => {
-    navigation.navigate("review");
+  const handleReviewPress = (review) => {
+    navigation.navigate("review", { review });
   };
 
   return (
@@ -64,7 +69,8 @@ const ReviewsScreen = ({ navigation }) => {
               song={review.song}
               artist={review.artist}
               rating={review.rating}
-              onPress={handleReviewPress}
+              onPress={() => handleReviewPress(review)}
+              key={review.id}
             />
           );
         })}
@@ -119,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#d7dedc",
     alignItems: "center",
-    justifyContent: "top",
+    justifyContent: "center",
   },
   sectionTitle: {
     fontSize: 20,
