@@ -15,17 +15,33 @@ const SignUpScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     if (password !== cpassword) {
-      toast.show('password and confirm password must match', { type: 'danger', duration: 2000, position: 'top' });
+      toast.show("password and confirm password must match", {
+        type: "danger",
+        duration: 2000,
+        position: "top",
+      });
     } else if (password.length < 10 || password.length > 25) {
-      toast.show('password not between 10 and 20 characters', { type: 'danger', duration: 2000, position: 'top' });
+      toast.show("password not between 10 and 20 characters", {
+        type: "danger",
+        duration: 2000,
+        position: "top",
+      });
     } else if (username.length < 3 || username.length > 20) {
-      toast.show('username not between 3 and 20 characters', { type: 'danger', duration: 2000, position: 'top' });
+      toast.show("username not between 3 and 20 characters", {
+        type: "danger",
+        duration: 2000,
+        position: "top",
+      });
     } else if (!username || !password || !cpassword || !email) {
-      toast.show('not all fields are filled', { type: 'danger', duration: 2000, position: 'top' });
+      toast.show("not all fields are filled", {
+        type: "danger",
+        duration: 2000,
+        position: "top",
+      });
     } else {
       axios
         .post(
-          "http://192.168.4.26:8080/index.php/user/signup",
+          "http://YOUR_IP_ADDRESS/index.php/user/signup",
           JSON.stringify({
             username: username,
             email: email,
@@ -35,16 +51,28 @@ const SignUpScreen = ({ navigation }) => {
         )
         .then((response) => {
           if (response.status === 201) {
-            toast.show('account created', { type: 'success', duration: 1500, position: 'top' });
+            toast.show("account created", {
+              type: "success",
+              duration: 1500,
+              position: "top",
+            });
             setTimeout(() => navigation.navigate("login"), 1500);
           }
         })
         .catch((error) => {
           if (error.response.status === 409) {
-            toast.show('account already created', { type: 'danger', duration: 1500, position: 'top' });
+            toast.show("account already created", {
+              type: "danger",
+              duration: 1500,
+              position: "top",
+            });
             setTimeout(() => navigation.navigate("login"), 1500);
           } else {
-            toast.show('could not sign up', { type: 'danger', duration: 2000, position: 'top' });
+            toast.show("could not sign up", {
+              type: "danger",
+              duration: 2000,
+              position: "top",
+            });
           }
         });
     }

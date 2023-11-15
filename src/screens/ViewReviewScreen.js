@@ -31,14 +31,22 @@ const ViewReviewScreen = ({ navigation, route }) => {
     };
     toggleModal();
     axios
-      .put("http://192.168.4.26:8080/index.php/review/update", updatedReview)
+      .put("http://YOUR_IP_ADDRESS/index.php/review/update", updatedReview)
       .then((response) => {
         if (response.status === 200) {
-          toast.show('update successful', { type: 'success', duration: 2000, position: 'top' });
+          toast.show("update successful", {
+            type: "success",
+            duration: 2000,
+            position: "top",
+          });
         }
       })
       .catch((error) => {
-        toast.show('update failed', { type: 'danger', duration: 2000, position: 'top' });
+        toast.show("update failed", {
+          type: "danger",
+          duration: 2000,
+          position: "top",
+        });
       });
   };
 
@@ -52,20 +60,32 @@ const ViewReviewScreen = ({ navigation, route }) => {
       rating: r,
     };
     axios
-      .delete("http://192.168.4.26:8080/index.php/review/delete", {
+      .delete("http://YOUR_IP_ADDRESS/index.php/review/delete", {
         data: deleteData,
       })
       .then((response) => {
         if (response.status === 200) {
-          toast.show('delete successful', { type: 'success', duration: 1500, position: 'top' });
+          toast.show("delete successful", {
+            type: "success",
+            duration: 1500,
+            position: "top",
+          });
           setTimeout(() => navigation.navigate("reviews", { currUser }), 1500);
         }
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          toast.show('the attempted removed review does not exist', { type: 'danger', duration: 1500, position: 'top' });
+          toast.show("the attempted removed review does not exist", {
+            type: "danger",
+            duration: 1500,
+            position: "top",
+          });
         } else {
-          toast.show('delete failed', { type: 'danger', duration: 1500, position: 'top' });
+          toast.show("delete failed", {
+            type: "danger",
+            duration: 1500,
+            position: "top",
+          });
         }
       });
   };

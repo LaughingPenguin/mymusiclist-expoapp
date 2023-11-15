@@ -31,7 +31,7 @@ const ReviewsScreen = ({ navigation, route }) => {
   // update the viewed items each time the page is loaded
   useEffect(() => {
     axios
-      .get("http://192.168.4.26:8080/index.php/review/read")
+      .get("http://YOUR_IP_ADDRESS/index.php/review/read")
       .then((response) => {
         setReviewItems(response.data);
       })
@@ -52,25 +52,41 @@ const ReviewsScreen = ({ navigation, route }) => {
     setArtist("");
     setRating(6);
     axios
-      .post("http://192.168.4.26:8080/index.php/review/create", review)
+      .post("http://YOUR_IP_ADDRESS/index.php/review/create", review)
       .then((response) => {
         if (response.status === 200) {
-          toast.show('create successful', { type: 'success', duration: 1500, position: 'top' });
+          toast.show("create successful", {
+            type: "success",
+            duration: 1500,
+            position: "top",
+          });
           setId(response.data.id);
         }
       })
       .catch((error) => {
         if (error.response.status === 409) {
-          toast.show('you have already created a review for this song', { type: 'danger', duration: 2000, position: 'top' });
+          toast.show("you have already created a review for this song", {
+            type: "danger",
+            duration: 2000,
+            position: "top",
+          });
         } else {
-          toast.show('create failed', { type: 'danger', duration: 2000, position: 'top' });
+          toast.show("create failed", {
+            type: "danger",
+            duration: 2000,
+            position: "top",
+          });
         }
       });
   };
 
   const validateReview = () => {
     if (song == "" || artist == "" || rating == 6) {
-      toast.show('please fill in all fields', { type: 'danger', duration: 2000, position: 'top' });
+      toast.show("please fill in all fields", {
+        type: "danger",
+        duration: 2000,
+        position: "top",
+      });
     } else {
       handleAddReview();
       toggleModal();
