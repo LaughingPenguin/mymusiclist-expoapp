@@ -8,7 +8,7 @@ import InputField from "../components/InputField";
 import Rating from "../components/Rating";
 
 const ReviewsScreen = ({ navigation, route }) => {
-  const username = "abc";
+  const username = route.params.username;
   const [id, setId] = useState(0);
   const [song, setSong] = useState("");
   const [artist, setArtist] = useState("");
