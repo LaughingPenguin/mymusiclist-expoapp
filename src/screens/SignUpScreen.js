@@ -1,5 +1,13 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+} from "react-native";
 import React, { useState } from "react";
+import axios from "axios";
+
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 
@@ -9,7 +17,36 @@ const SignUpScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
 
-  const onSignUpPress = () => {};
+  const handleSubmit = () => {
+    if (password !== cpassword) {
+      console.log("password and confirm password must match");
+    } else {
+      axios
+        .post(
+          "http://YOUR_IP_ADDRESS:8080/index.php/user/signup",
+          JSON.stringify({
+            username: username,
+            email: email,
+            password: password,
+            cpassword: cpassword,
+          })
+        )
+        .then((response) => {
+          if (response.status === 201) {
+            console.log("account created", response);
+            navigation.navigate("login");
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 409) {
+            console.log("account already exists", error);
+            navigation.navigate("login");
+          } else {
+            console.log("could not sign up", error);
+          }
+        });
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -32,7 +69,9 @@ const SignUpScreen = ({ navigation }) => {
         setValue={setCpassword}
         secureTextEntry
       />
-      <SubmitButton text="sign up" onPress={onSignUpPress} />
+
+      <SubmitButton text="sign up" onPress={handSubmit} />
+
       <TouchableOpacity onPress={() => navigation.navigate("login")}>
         <Text style={styles.tologin}>
           already have an account? click here to log in!
