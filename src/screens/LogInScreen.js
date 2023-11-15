@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React, { useState } from "react";
+import { useToast } from "react-native-toast-notifications";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 import axios from "axios";
@@ -7,11 +8,12 @@ import axios from "axios";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const toast = useToast();
 
   const handleSubmit = () => {
     axios
       .post(
-        "http://172.21.55.39:8080/index.php/user/login",
+        "http://YOUR_IP_ADDRESS:8080/index.php/user/login",
         JSON.stringify({
           email: email,
           password: password,
@@ -19,24 +21,37 @@ const LoginScreen = ({ navigation }) => {
       )
       .then((response) => {
         if (response.status === 200) {
-          console.log("login successful", response);
           setEmail("");
           setPassword("");
+          toast.show("login successful", {
+            type: "success",
+            duration: 1500,
+            position: "top",
+          });
           if (response.headers.authorization) {
             const authorizationHeader = response.headers.authorization;
             const token = authorizationHeader.split("Bearer ")[1];
-            navigation.navigate("reviews", {
-              username: token,
-            });
+            setTimeout(
+              () => navigation.navigate("reviews", { username: token }),
+              1500
+            );
           }
         }
       })
       .catch((error) => {
         if (error.response.status === 401) {
-          console.log("incorrect credentials");
+          toast.show("incorrect credentials", {
+            type: "danger",
+            duration: 2000,
+            position: "top",
+          });
         } else if (error.response.status === 404) {
-          console.log("account does not exist", error);
-          navigation.navigate("sign up");
+          toast.show("account does not exist, please create an account", {
+            type: "danger",
+            duration: 1500,
+            position: "top",
+          });
+          setTimeout(() => navigation.navigate("sign up"), 1500);
         }
       });
   };
