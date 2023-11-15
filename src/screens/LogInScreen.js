@@ -26,7 +26,12 @@ const LoginScreen = ({ navigation }) => {
         }
       })
       .catch((error) => {
-        throw error;
+        if (error.response.status === 401) {
+          console.log('incorrect credentials')
+        } else if (error.response.status === 404) {
+          console.log('account does not exist', error);
+          navigation.navigate('sign up');
+        }
       });
   };
 
