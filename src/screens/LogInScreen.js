@@ -37,6 +37,40 @@ const LoginScreen = ({ navigation }) => {
       });
   };
 
+<<<<<<< HEAD
+  const handleSubmit = () => {
+    axios
+      .post("http://192.168.4.26:8080/index.php/user/login",
+      JSON.stringify({
+        email: email,
+        password: password,
+      }))
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("login successful", response)
+          // if (response.headers.authorization) {
+          //   // get authorization header from response
+          //   // get token from authorization header
+          //   // store token in storage for future authenticated requests
+          //   // i.e., AsyncStorage.setItem('token', token);
+          // }
+          navigation.navigate("reviews")
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          console.log('incorrect credentials')
+        } else if (error.response.status === 404) {
+          console.log('account does not exist', error);
+          navigation.navigate('sign up');
+        }
+      });
+=======
+  const onLoginPress = () => {
+    navigation.navigate("reviews");
+>>>>>>> origin/15-add-crud-screens
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>log in</Text>
@@ -66,11 +100,12 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "70%",
-    margin: 10,
-    marginTop: "70%",
+    padding: 10,
+    paddingTop: "70%",
+    paddingBottom: "100%",
     alignItems: "center",
-    marginHorizontal: "15%",
+    paddingHorizontal: "15%",
+    backgroundColor: "#d7dedc",
   },
   title: {
     fontSize: 30,
